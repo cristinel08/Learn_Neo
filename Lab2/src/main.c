@@ -1,6 +1,6 @@
 #include <arm_neon.h>
 #include <stdio.h>
-#include <neon.h>
+#include "neon.h"
 #include <time.h>
 
 
@@ -26,16 +26,28 @@ int main()
     int32_t sum = sum_c(c_array);
     clock_t end = clock();
     float time_spent = (float)(end - begin) / CLOCKS_PER_SEC;
-    printf("C_IMPLEMENTATION:\n");
-    printf("The sum of the elements is: %d\n", sum);
-    printf("The execution time is: %f ms\n", time_spent * 1000);
+    (void)printf("C_IMPLEMENTATION:\n");
+    (void)printf("The sum of the elements is: %d\n", sum);
+    (void)printf("The execution time is: %f ms\n", time_spent * 1000);
     //neon implementation
     begin = clock();
     int32_t neonSum = CreateNeonArrayAndSum();
     end = clock();
     time_spent = (float)(end - begin) / CLOCKS_PER_SEC;
-    printf("NEON_IMPLEMENTATION\n");
-    printf("The sum of the elements is: %d\n", neonSum);
-    printf("The execution time is: %f ms\n", time_spent * 1000);
+    (void)printf("NEON_IMPLEMENTATION\n");
+    (void)printf("The sum of the elements is: %d\n", neonSum);
+    (void)printf("The execution time is: %f ms\n", time_spent * 1000);
+
+    (void)printf("Another neon implementation:\n");
+    begin = clock();
+    for (int16_t i = 0; i < ARRAY_SIZE; i++)
+    {
+        c_array[i] = i;
+    }
+    neonSum = sum_ni(c_array, ARRAY_SIZE);
+    end = clock();
+    time_spent = (float)(end - begin) / CLOCKS_PER_SEC;
+    (void)printf("The sum of the elements is: %d\n", neonSum);
+    (void)printf("The execution time is: %f ms\n", time_spent * 1000);
     return 0;
 }
